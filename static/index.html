@@ -1,0 +1,79 @@
+<!--
+ * @Author: SudemQaQ
+ * @Date: 2024-03-07 11:36:25
+ * @email: mail@szhcloud.cn
+ * @Blog: https://blog.szhcloud.cn
+ * @github: https://github.com/sang8052
+ * @LastEditors: SudemQaQ
+ * @LastEditTime: 2024-03-07 13:36:16
+ * @Description: 
+-->
+<html>
+<head>
+    <title>PCTV 在线电视</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<div id="video_list" style="text-align: center;">
+    <span style="margin-right: 16px;">请选择频道</span>
+    <select id="video_select" onchange="update_video_live()" style="width: 500px;"></select>
+</div>
+<div id="video_play" style="text-align: center;width: 100%;margin-top: 16px;">
+    <div id="video_container" style="width: 80%;height: 100%;margin-left: 10%;">
+        <div id="video_xgplayer"  >
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/src/js/jquery-3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/src/js/xgplayer-3.0.13/index.min.css"/>
+<script charset="utf-8" src="/src/js/xgplayer-3.0.13/index.min.js"></script>
+<script charset="utf-8" src="/src/js/xgplayer-hls-3.0.13/index.min.js"></script>
+<script>
+var video_live_src = "";
+var video_player = null;
+
+$("#video_play").hide()
+function query_video_list(){
+    $.ajax({
+    url:"/tvs",
+    type:"get",
+    dataType:"json",
+    success:(res)=>{
+            var tv_list = "<option value=\"\"></option>";
+            res.data.forEach(tv => {
+            tv_list = tv_list + "<option value=\""+ tv["live"]+"\">" + tv["name"] + "</option>";
+            });
+            $("#video_select").html(tv_list);
+        }
+    })
+}
+
+
+function update_video_live(){
+    video_live_src = $("#video_select").val();
+    console.log("视频流地址:" + video_live_src);
+    if(video_player) {
+        video_player.destroy();
+        video_player = null;
+    }
+    if(video_live_src) {
+        $("#video_play").show();
+        const config = {
+          "id": "video_container",
+          "url": window.location.origin + "/" + video_live_src,
+          "playsinline": true,
+          "plugins": [],
+          "width":$("#video_container").width(),
+          "height":$("#video_container").height() - 50,
+          "isLive": true,
+          "autoplay": true
+        }
+        config.plugins.push(HlsPlayer)
+        video_player = new Player(config)
+    }
+    else $("#video_play").hide();
+}
+
+query_video_list();
+</script>
+</html>

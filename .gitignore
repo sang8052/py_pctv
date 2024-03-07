@@ -1,0 +1,6 @@
+dist
+build
+.git
+__pycache__
+static/data
+*.spec
