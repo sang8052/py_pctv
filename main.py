@@ -5,7 +5,7 @@ email: mail@szhcloud.cn
 Blog: https://blog.szhcloud.cn
 github: https://github.com/sang8052
 LastEditors: SudemQaQ
-LastEditTime: 2024-03-07 15:08:46
+LastEditTime: 2024-03-07 15:41:55
 Description: 
 '''
 from gevent import pywsgi
@@ -18,6 +18,8 @@ import gconfig as gc
 from tv import tv_5xtv
 import time
 
+app_version = "1.0.0.beta"
+
 def signal_handler(signal, handle):
     if signal == 2:
         tools.console_log("[ERROR]收到程序终止信号")
@@ -29,8 +31,16 @@ def signal_handler(signal, handle):
 
 if __name__ == "__main__":
 
+
     colorama.init()
     signal.signal(signal.SIGINT, signal_handler)
+
+    print("========================================")
+    print("PY_PCTV 流媒体客户端")
+    print("Author:  mail@szhcloud.cn")
+    print("Version: " + app_version)
+    print("========================================")
+
 
     config = tools.read_json("config.json")
     cache = xcache.xcache(config["redis"])
