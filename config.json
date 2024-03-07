@@ -8,7 +8,8 @@
     },
     "app":{
         "address":"0.0.0.0",
-        "port":9655
+        "port":9655,
+        "thread_log":false
     },
     "video_expire_time":3600,
     "upload_cvmart_oss":false,

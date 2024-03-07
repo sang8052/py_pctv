@@ -1,3 +1,13 @@
+<!--
+ * @Author: SudemQaQ
+ * @Date: 2024-03-07 15:34:25
+ * @email: mail@szhcloud.cn
+ * @Blog: https://blog.szhcloud.cn
+ * @github: https://github.com/sang8052
+ * @LastEditors: SudemQaQ
+ * @LastEditTime: 2024-03-07 15:47:24
+ * @Description: 
+-->
 # 项目简介
 这是一个基于 Python 开发的 个人PC端电视项目。项目的宗旨是解决因 电视家等APP 被关闭后个人用户观看TV 困难的问题。
 环境需求:
@@ -24,12 +34,9 @@
 ## 修改配置文件 
 修改项目文件夹下的 config.json 中 redis 的密码
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/2484069/1709793084694-575ed91c-71b3-4b74-96d8-250967a3ee43.png#averageHue=%23f9f7f7&clientId=u19b91260-0f48-4&from=paste&height=352&id=u6edf01d5&originHeight=352&originWidth=653&originalType=binary&ratio=1&rotation=0&showTitle=false&size=24922&status=done&style=none&taskId=u05d357e9-3e52-4425-925c-7c55c4eb849&title=&width=653)
-# 二、开启OSS 全网加速
-极市[[https://www.cvmart.net/](https://www.cvmart.net/)]为每位开发者准备了 5G 的个人文件空间，用户可以向该空间中上传自定义的文件。这里利用该接口,将视频切片文件上传到 极市的OSS 中, 即可实现视频流全网加速播放。
-编辑项目文件夹下的 config.json ，修改 upload_cvmart_oss 选项为 true , 然后填入你的极市的用户名和账户密码。
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/2484069/1709796540298-8e7551b8-a07f-4db7-a918-31640ecf6d8d.png#averageHue=%23fcf8f7&clientId=ua7cee7c3-81fa-4&from=paste&height=348&id=u5a036759&originHeight=348&originWidth=474&originalType=binary&ratio=1&rotation=0&showTitle=false&size=17183&status=done&style=none&taskId=u021bd796-3d58-4484-a0c7-0515f3ed637&title=&width=474)
 
-# 三、在浏览器中观看
+
+# 二、在浏览器中观看
 项目默认使用 9655 端口，项目启动后你可以打开 http://localhost:9655 观看视频直播。
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/2484069/1709796791010-41d62709-a47a-4eb6-823d-ea8fb9ac1e26.png#averageHue=%232b2e2d&clientId=ua7cee7c3-81fa-4&from=paste&height=899&id=u92a7e082&originHeight=899&originWidth=1587&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1648344&status=done&style=none&taskId=u47cfdae5-f7d4-4e57-9ad5-fea59f1d86a&title=&width=1587)
 

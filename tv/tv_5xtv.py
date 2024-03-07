@@ -13,6 +13,7 @@ class tv_5xtv(threading.Thread):
         self.config = config 
         self.cache = cache
         self.thread_id = thread_id
+        self.show_console = config["app"]["thread_log"]
 
     def console_log(self,content):
         if self.show_console:
