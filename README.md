@@ -17,11 +17,12 @@
 
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/2484069/1709796812720-6ba12a6e-de31-4507-a050-3c4929a3c35b.png#averageHue=%23272727&clientId=ua7cee7c3-81fa-4&from=paste&height=491&id=uf1268078&originHeight=491&originWidth=970&originalType=binary&ratio=1&rotation=0&showTitle=false&size=75096&status=done&style=none&taskId=uefd62279-557e-4142-8f26-aa1ef75639c&title=&width=970)
 
-V1.1 版本(开发中)即将上线,敬请期待
-1.新增数个国内高清视频源
-2.新增 F1 超级工作站 (By:https://github.com/bibixx/zium.app)
-3.新增 F1_PROXY 模块(搭配F1 超级工作站,需要F1TV PRO 账号)
-4.移除 Redis 数据库依赖
+V1.1 版本(开发中)即将上线,敬请期待  
+1.新增数个国内高清视频源  
+2.新增 F1 超级工作站 (By:https://github.com/bibixx/zium.app)  
+3.新增 F1_PROXY 模块(搭配F1 超级工作站,需要F1TV PRO 账号)  
+4.移除 Redis 数据库依赖  
+
 ![image](https://github.com/sang8052/py_pctv/assets/31176926/328b14d6-9f1a-43a7-8e1f-c677c747e8bc)
 
 
