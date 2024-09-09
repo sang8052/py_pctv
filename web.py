@@ -85,12 +85,7 @@ def http_response_error(err):
 def http_list_tvs():
     tvs = copy.deepcopy(current_app.tvs)
     for tv in tvs :
-        if current_app.cache._has(tv["live_heart"]):
-            tv_heart = current_app.cache._get_value(tv["live_heart"])
-            tv["is_live"] = True
-            tv["update_time"] = tv_heart["download_time"]
-        else:
-            tv["is_live"] = False
+        tv["is_live"] = True
     return json_response({"code":0,"msg":"操作成功","data":tvs})
 
 @app.route("/",methods=['GET'])

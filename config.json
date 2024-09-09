@@ -1,20 +1,9 @@
 {
 
-    "redis":{
-        "host":"127.0.0.1",
-        "password":"JYapU904ccnUzMqC",
-        "port":6379,
-        "index":0
-    },
     "app":{
         "address":"0.0.0.0",
         "port":9655,
-        "thread_log":false
+        "thread_log":true
     },
-    "video_expire_time":3600,
-    "upload_cvmart_oss":false,
-    "cvmart":{
-        "username":"************",
-        "password":"************"
-    }
+    "video_expire_time":3600
 }
