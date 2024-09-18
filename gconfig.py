@@ -5,7 +5,7 @@ email: mail@szhcloud.cn
 Blog: https://blog.szhcloud.cn
 github: https://github.com/sang8052
 LastEditors: SudemQaQ
-LastEditTime: 2024-03-07 12:30:44
+LastEditTime: 2024-09-18 12:30:51
 Description: 全局配置文件信息
 '''
 
@@ -16,11 +16,15 @@ REQUEST_5XTV_CHANNEL_LIST = "https://gsports-cdn.smgtech.net/api/v1/channel/chan
 
 
 APP_5XTV_M3U8_FILE = "./static/5xtv.m3u8"
+APP_5XTV_M3U8_VIP_FILE = "./static/5xtv_vip.m3u8"
 APP_5XTV_DES_KEY = "7jKKND2V38eXvJEm"
 APP_5XTV_MD5_KEY = "ysc7mpeu6i39"
 APP_5XTV_APPID = "5starsalt"
 APP_5XTV_NONCESTR = "z7cl7WR9"
 
+CVMART_OSS_ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com"
+CVMART_OSS_BUCKET = "extremevision-js-userfile"
+CVMART_OSS_DOMAIN = "https://extremevision-js-userfile.oss-cn-hangzhou.aliyuncs.com/"
 
 
 

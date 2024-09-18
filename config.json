@@ -2,8 +2,12 @@
 
     "app":{
         "address":"0.0.0.0",
-        "port":9655,
+        "port":61987,
         "thread_log":true
     },
-    "video_expire_time":3600
+    "video_expire_time":3600,
+    "cvmart":{
+        "username":"....",
+        "password":"..."
+    }
 }
