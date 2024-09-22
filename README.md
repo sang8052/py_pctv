@@ -14,10 +14,10 @@
 环境需求:
 
 1. python >= 3.8
-2.ffmpeg
-3. zlmediaserver
+2. ffmpeg
+3. 3. zlmediaserver
 
-V1.2 版本（预发布）
+V1.2 版本（预发布）  
 1.本地不再下载切片文件,改为使用 ffmpeg 直接拉流     
 2.修复五星体育音画不同步的问题, 使用 ffmpeg 在本地对流进行重编码校正,并推流到 ZLM 进行播放  
 3.不再使用Flask 作为默认的Web 容器,改为使用 zlm 提供HTTP 访问的能力  
