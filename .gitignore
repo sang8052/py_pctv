@@ -5,3 +5,4 @@ build
 __pycache__
 static/data
 *.spec
+*.m3u8

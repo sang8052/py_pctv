@@ -5,12 +5,13 @@ email: mail@szhcloud.cn
 Blog: https://blog.szhcloud.cn
 github: https://github.com/sang8052
 LastEditors: SudemQaQ
-LastEditTime: 2024-09-18 12:34:43
+LastEditTime: 2024-09-22 22:38:19
 Description: 
 '''
 from gevent import pywsgi
 from gevent import monkey
-#monkey.patch_all()
+monkey.patch_all()
+
 import colorama
 import signal,os
 import tools,web
@@ -19,7 +20,7 @@ from tv import tv_5xtv
 import cv_oss
 import time,threading
 
-app_version = "1.0.1.beta"
+app_version = "1.0.2.debug"
 
 def signal_handler(signal, handle):
     if signal == 2:
@@ -27,8 +28,6 @@ def signal_handler(signal, handle):
         pid = os.getpid()
         tools.console_log("[WARNING]关闭进程[pid:" + str(pid) + "]")
         tools.kill_pid(pid)
-
-
 
 if __name__ == "__main__":
 
@@ -48,24 +47,17 @@ if __name__ == "__main__":
 
     web.app.tvs = []
     web.app._config = config 
-    th_oss = False
-    if config["cvmart"]["username"] != "":
-        tools.console_log("[INFO]开启 OSS 对象存储加速!")
-        th_oss = cv_oss.cv_oss(config["cvmart"])
-        th = threading.Thread(target=th_oss.auto_handle_delete)
-        th.start()
-
-    th_5xtv = tv_5xtv.tv_5xtv(config,1,th_oss)
+ 
+    th_5xtv = tv_5xtv.tv_5xtv(config,1)
     th_5xtv.start()
     tools.console_log("[INFO]线程[五星体育直播]启动成功")
-    tv_info = {"name":"五星体育","thread_id":1,"live":gc.APP_5XTV_M3U8_VIP_FILE.replace("./static/","")}
+    tv_info = {"name":"五星体育","thread_id":1,"live":gc.APP_5XTV_M3U8_FILE.replace("./static/","")}
     web.app.tvs.append(tv_info)
 
     server = pywsgi.WSGIServer((config["app"]["address"],config["app"]["port"]),web.app)
     server.multithread = True
     tools.console_log("[INFO]WSGIServer Listen %s:%d" % (config["app"]["address"],config["app"]["port"]))
     server.serve_forever()
-
 
 
     

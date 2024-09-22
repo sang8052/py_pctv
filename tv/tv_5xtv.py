@@ -5,7 +5,7 @@ email: mail@szhcloud.cn
 Blog: https://blog.szhcloud.cn
 github: https://github.com/sang8052
 LastEditors: SudemQaQ
-LastEditTime: 2024-09-18 12:13:47
+LastEditTime: 2024-09-22 22:40:06
 Description: 
 '''
 
@@ -19,12 +19,11 @@ class tv_5xtv(threading.Thread):
     show_console = False
     oss = False
 
-    def __init__(self, config,thread_id,oss)-> None:
+    def __init__(self, config,thread_id)-> None:
         super().__init__()
         self.config = config 
         self.thread_id = thread_id
         self.show_console = config["app"]["thread_log"]
-        self.oss = oss 
 
     def console_log(self,content):
         if self.show_console:
@@ -39,9 +38,6 @@ class tv_5xtv(threading.Thread):
         response = json.loads(resp.text)
         return response["data"][0]
     
-
-
-
     def run(self):
         self.console_log("[INFO]请求直播间播放地址")
         live_info = self.request_live_address()
@@ -60,7 +56,6 @@ class tv_5xtv(threading.Thread):
                     resp = requests.get(live_address,headers={"user-agent": gc.REQUEST_USER_AGENT, "referer": gc.REQUEST_5XTV_SRC_REFERER},timeout=3)
                     if resp.status_code == 200:
                         m3u8_content = resp.text
-                        m3u8_vip_content = resp.text
                     else:
                         tools.console_log("[WARNING]直播流会话过期,重新刷新直播流地址!")
                         live_info = self.request_live_address()
@@ -89,13 +84,10 @@ class tv_5xtv(threading.Thread):
                 
                     url["local_file"] = "data/5xtv_" + url["time"] + ".ts"
                     m3u8_content = m3u8_content.replace(content, url["local_file"])
-                    if self.oss:
-                        oss_url = self.oss.upload_file("./static/" +   url["local_file"])
-                        m3u8_vip_content = m3u8_vip_content.replace(content,oss_url)
+                  
             self.console_log("[INFO]更新5xtv.m3u8")
             tools.write_file(gc.APP_5XTV_M3U8_FILE,m3u8_content)
-            if self.oss:
-                tools.write_file(gc.APP_5XTV_M3U8_VIP_FILE,m3u8_vip_content)
+           
             # 删除切片的文件
             files = os.listdir("./static/data")
             for file in files:

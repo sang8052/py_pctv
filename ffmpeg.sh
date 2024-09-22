@@ -1,0 +1,1 @@
+ffmpeg -i http://10.25.10.70:56765/5xtv.m3u8 -vcodec copy -acodec aac -af "adelay=2100|2100" -vsync 2  -f rtsp -rtsp_transport tcp rtsp://10.25.10.70/pctv/772934c3-13a9-015b-4070-83f76806d8e5 
