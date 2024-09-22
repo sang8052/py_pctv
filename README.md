@@ -15,7 +15,7 @@
 
 1. python >= 3.8
 2. ffmpeg
-3. 3. zlmediaserver
+3. zlmediaserver
 
 V1.2 版本（预发布）  
 1.本地不再下载切片文件,改为使用 ffmpeg 直接拉流     
