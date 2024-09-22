@@ -5,7 +5,7 @@
  * @Blog: https://blog.szhcloud.cn
  * @github: https://github.com/sang8052
  * @LastEditors: SudemQaQ
- * @LastEditTime: 2024-03-07 15:47:24
+ * @LastEditTime: 2024-09-22 23:15:03
  * @Description: 
 -->
 # 项目简介
@@ -14,11 +14,14 @@
 环境需求:
 
 1. python >= 3.8
+2. ffmpeg 
+3. zlmediaserver
 
-
-V1.1 版本  
-1.移除 Redis 数据库依赖    
-2.修复 m3u8 的密钥在播放一段时间后失效的问题
+V1.2 版本（预发布）
+1.本地不再下载切片文件,改为使用 ffmpeg 直接拉流   
+2.修复五星体育音画不同步的问题, 使用 ffmpeg 在本地对流进行重编码校正,并推流到 ZLM 进行播放
+3.不再使用Flask 作为默认的Web 容器,改为使用 zlm 提供HTTP 访问的能力
+4.前端界面优化,完全重构的前端播放界面,考虑接入弹幕平台(寻求赞助)
 
 
 # 一、在浏览器中观看
