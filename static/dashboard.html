@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PCTV 控制台</title>
+    <style>
+        :root {
+            --bg-1: #0b1f2a;
+            --bg-2: #12384c;
+            --card: rgba(255, 255, 255, 0.92);
+            --text: #12242d;
+            --muted: #536a75;
+            --ok: #138a36;
+            --bad: #bf1d2d;
+            --accent: #1d6fa3;
+            --accent-2: #2ca58d;
+            --border: rgba(18, 36, 45, 0.15);
+            --shadow: 0 18px 40px rgba(0, 0, 0, 0.20);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "IBM Plex Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 15% 10%, rgba(44, 165, 141, 0.45), transparent 45%),
+                radial-gradient(circle at 80% 20%, rgba(29, 111, 163, 0.5), transparent 50%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2));
+            padding: 28px 16px 40px;
+        }
+
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            gap: 16px;
+        }
+
+        .hero {
+            background: rgba(255, 255, 255, 0.12);
+            color: #eaf5fb;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            padding: 20px 22px;
+            backdrop-filter: blur(8px);
+            box-shadow: var(--shadow);
+            animation: rise 420ms ease;
+        }
+
+        .hero h1 {
+            margin: 0 0 6px;
+            font-size: 28px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero p {
+            margin: 0;
+            color: #d7e9f5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 16px;
+            animation: rise 520ms ease;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 18px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 13px;
+            background: #eef4f7;
+            color: #495b64;
+        }
+
+        .badge-ok {
+            background: rgba(19, 138, 54, 0.14);
+            color: var(--ok);
+        }
+
+        .badge-bad {
+            background: rgba(191, 29, 45, 0.14);
+            color: var(--bad);
+        }
+
+        .list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 8px;
+        }
+
+        .item {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 13px;
+            background: #fff;
+        }
+
+        .item b {
+            display: inline-block;
+            width: 130px;
+        }
+
+        .sub {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--muted);
+            word-break: break-all;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0 10px;
+            font-size: 14px;
+            color: var(--text);
+            background: #fff;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        button, .btn-link {
+            border: 0;
+            border-radius: 10px;
+            height: 40px;
+            padding: 0 16px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+        }
+
+        .btn-ghost {
+            color: var(--accent);
+            background: #eef7fc;
+            border: 1px solid rgba(29, 111, 163, 0.25);
+        }
+
+        .hint {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        @keyframes rise {
+            from {
+                transform: translateY(8px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 920px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <section class="hero">
+        <h1>PCTV 控制台</h1>
+        <p>版本 <span id="app-version">-</span> · 状态自动上报（每 5 秒）</p>
+    </section>
+
+    <section class="grid">
+        <div class="card">
+            <h2>服务状态</h2>
+            <div class="status">
+                <span>当前状态</span>
+                <span id="overall-status" class="badge">检查中</span>
+            </div>
+            <ul id="status-list" class="list"></ul>
+            <div class="actions">
+                <button id="open-player" class="btn-primary">跳转播放界面</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>更新检查</h2>
+            <label for="github-repo">GitHub 仓库（owner/repo）</label>
+            <input id="github-repo" placeholder="例如 matthewlu070111/py_pctv" />
+            <div class="actions">
+                <button id="check-update" class="btn-primary">检查最新 Release</button>
+                <a id="release-link" class="btn-link btn-ghost" href="https://github.com/matthewlu070111/py_pctv/releases" target="_blank" rel="noopener noreferrer">打开 Release</a>
+            </div>
+            <div id="update-result" class="hint">尚未检查更新</div>
+        </div>
+    </section>
+</div>
+
+<script>
+    const els = {
+        appVersion: document.getElementById("app-version"),
+        overallStatus: document.getElementById("overall-status"),
+        statusList: document.getElementById("status-list"),
+        releaseLink: document.getElementById("release-link"),
+        updateResult: document.getElementById("update-result"),
+        githubRepo: document.getElementById("github-repo")
+    };
+
+    async function requestJSON(url, options) {
+        const resp = await fetch(url, options);
+        const data = await resp.json();
+        if (!resp.ok || data.code !== 0) {
+            throw new Error(data.msg || ("HTTP " + resp.status));
+        }
+        return data.data;
+    }
+
+    function getRepoValue() {
+        const val = (els.githubRepo.value || "").trim();
+        return val || "matthewlu070111/py_pctv";
+    }
+
+    function getReleaseUrl(repo) {
+        return "https://github.com/" + repo + "/releases";
+    }
+
+    function updateReleaseLink(url) {
+        els.releaseLink.href = url || getReleaseUrl(getRepoValue());
+    }
+
+    function renderOverallStatus(statusText) {
+        els.overallStatus.textContent = statusText;
+        els.overallStatus.className = "badge " + (statusText === "正常" ? "badge-ok" : "badge-bad");
+    }
+
+    function renderStatusChecks(checks) {
+        els.statusList.innerHTML = "";
+        checks.forEach((item) => {
+            const li = document.createElement("li");
+            li.className = "item";
+            li.innerHTML = "<b>" + item.name + "</b>" +
+                (item.ok ? "<span style='color:#138a36'>正常</span>" : "<span style='color:#bf1d2d'>异常</span>") +
+                "<div class='sub'>" + item.detail + "</div>";
+            els.statusList.appendChild(li);
+        });
+    }
+
+    async function loadMeta() {
+        const data = await requestJSON("/api/config");
+        els.appVersion.textContent = data.app_version || "-";
+        els.githubRepo.value = ((data.config || {}).update || {}).github_repo || "matthewlu070111/py_pctv";
+        updateReleaseLink();
+    }
+
+    async function refreshStatus() {
+        const data = await requestJSON("/api/status");
+        renderOverallStatus(data.status || "异常");
+        renderStatusChecks(data.checks || []);
+    }
+
+    async function checkUpdate() {
+        const repo = getRepoValue();
+        const data = await requestJSON("/api/update/latest?repo=" + encodeURIComponent(repo));
+        updateReleaseLink(data.html_url || getReleaseUrl(repo));
+        const hit = data.has_update ? "有新版本" : "已是最新";
+        els.updateResult.textContent =
+            hit + " | 当前: " + (data.current_version || "-") +
+            " | 最新: " + (data.latest_version || "-") +
+            " | 发布时间: " + (data.published_at || "-");
+    }
+
+    async function pollStatusOnce() {
+        try {
+            await refreshStatus();
+        } catch (err) {
+            renderOverallStatus("异常");
+            els.statusList.innerHTML = "<li class='item'><b>status</b><span style='color:#bf1d2d'>异常</span><div class='sub'>" + err.message + "</div></li>";
+        }
+    }
+
+    document.getElementById("check-update").addEventListener("click", async () => {
+        try {
+            await checkUpdate();
+        } catch (err) {
+            els.updateResult.textContent = "更新检查失败: " + err.message;
+        }
+    });
+
+    document.getElementById("open-player").addEventListener("click", () => {
+        window.open("/index.html", "_blank");
+    });
+
+    els.githubRepo.addEventListener("input", () => {
+        updateReleaseLink();
+    });
+
+    (async () => {
+        try {
+            await loadMeta();
+        } catch (err) {
+            els.updateResult.textContent = "配置读取失败: " + err.message;
+        }
+        await pollStatusOnce();
+        setInterval(pollStatusOnce, 5000);
+    })();
+</script>
+</body>
+</html>

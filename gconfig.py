@@ -1,11 +1,9 @@
-'''
-Author: SudemQaQ
-Date: 2024-03-07 10:21:51
-email: mail@szhcloud.cn
-Blog: https://blog.szhcloud.cn
-github: https://github.com/sang8052
-LastEditors: SudemQaQ
-LastEditTime: 2024-09-18 12:30:51
+﻿'''
+Author: SudemQaQ, imxiaoanag
+Date: 2026-03-04
+Blog: https://www.imxiaoanag.com
+github: https://github.com/matthewlu070111/py_pctv
+LastEditors: imxiaoanag
 Description: 全局配置文件信息
 '''
 
@@ -25,6 +23,7 @@ APP_5XTV_NONCESTR = "z7cl7WR9"
 CVMART_OSS_ENDPOINT = "https://oss-cn-hangzhou.aliyuncs.com"
 CVMART_OSS_BUCKET = "extremevision-js-userfile"
 CVMART_OSS_DOMAIN = "https://extremevision-js-userfile.oss-cn-hangzhou.aliyuncs.com/"
+
 
 
 

@@ -1,13 +1,16 @@
 {
-
-    "app":{
-        "address":"0.0.0.0",
-        "port":56765,
-        "thread_log":true
+    "app": {
+        "address": "0.0.0.0",
+        "port": 56765,
+        "thread_log": true,
+        "auto_open_dashboard": true
     },
-    "video_expire_time":3600,
-    "cvmart":{
-        "username":"",
-        "password":""
+    "video_expire_time": 3600,
+    "update": {
+        "github_repo": "matthewlu070111/py_pctv"
+    },
+    "cvmart": {
+        "username": "",
+        "password": ""
     }
 }

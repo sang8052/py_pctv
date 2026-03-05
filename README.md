@@ -1,30 +1,62 @@
 <!--
- * @Author: SudemQaQ
- * @Date: 2024-03-07 15:34:25
- * @email: mail@szhcloud.cn
- * @Blog: https://blog.szhcloud.cn
- * @github: https://github.com/sang8052
- * @LastEditors: SudemQaQ
- * @LastEditTime: 2024-09-22 23:15:03
- * @Description: 
+ * @Author: SudemQaQ, imxiaoanag
+ * @Date: 2026-03-05
+ * @Blog: https://www.imxiaoanag.com
+ * @github: https://github.com/matthewlu070111/py_pctv
+ * @LastEditors: imxiaoanag
+ * @Description:
 -->
-# 项目简介
-这是一个基于 Python 开发的 个人PC端电视项目。目前仅可用于观看五星体育的直播  
 
-环境需求:
+# py_pctv
 
-1. python >= 3.8
-2. ffmpeg
-3. zlmediaserver
+一个基于 Python 的 PC 端直播项目，当前内置五星体育源。  
+项目提供控制台页面与播放页面，支持 Windows 托盘常驻运行。
 
-V1.2 版本（预发布）  
-1.本地不再下载切片文件,改为使用 ffmpeg 直接拉流     
-2.修复五星体育音画不同步的问题, 使用 ffmpeg 在本地对流进行重编码校正,并推流到 ZLM 进行播放  
-3.不再使用Flask 作为默认的Web 容器,改为使用 zlm 提供HTTP 访问的能力  
-4.前端界面优化,完全重构的前端播放界面,考虑接入弹幕平台(寻求赞助)
+## 使用
 
+### Release 下载
 
-# 一、在浏览器中观看
-项目默认使用 9655 端口，项目启动后你可以打开 http://localhost:9655 观看视频直播。
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/2484069/1709796791010-41d62709-a47a-4eb6-823d-ea8fb9ac1e26.png#averageHue=%232b2e2d&clientId=ua7cee7c3-81fa-4&from=paste&height=899&id=u92a7e082&originHeight=899&originWidth=1587&originalType=binary&ratio=1&rotation=0&showTitle=false&size=1648344&status=done&style=none&taskId=u47cfdae5-f7d4-4e57-9ad5-fea59f1d86a&title=&width=1587)
+普通使用不需要配置 Python 环境，直接下载并运行 `py_pctv.exe` 即可：
 
+https://github.com/matthewlu070111/py_pctv/releases
+
+### Windows 托盘操作
+
+在 Windows 下运行 `py_pctv.exe` 后，程序会常驻在系统托盘（右下角通知区域）。
+
+1. 如果托盘未直接显示，请先点右下角 `^` 展开隐藏图标。
+2. 右键托盘图标可看到菜单：
+- `打开控制台`：打开 `dashboard` 管理页面。
+- `打开播放页`：打开播放器页面。
+- `退出`：关闭常驻进程。
+
+### 界面预览
+
+控制台：
+
+![dashboard](markdown/dashboard.png)
+
+播放页：
+
+![player](markdown/player.png)
+
+## 开发
+
+### 环境依赖
+
+1. Python >= 3.8
+2. `pip` 可用（用于安装依赖）
+
+### 本地运行（源码）
+
+1. 安装依赖
+```bash
+pip install -r requirement.ini
+```
+2. 启动
+```bash
+python py_pctv.py
+```
+3. 访问地址
+- 控制台: `http://127.0.0.1:56765/dashboard.html`
+- 播放页: `http://127.0.0.1:56765/index.html`

@@ -1,8 +1,39 @@
-dist
-dist2
-build
-.git
-__pycache__
-static/data
+# Python cache / bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual env
+.venv/
+venv/
+env/
+
+# Test / lint cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Build artifacts
+build/
+dist/
 *.spec
-*.m3u8
+*.log
+
+# Runtime generated files
+static/data/
+static/5xtv.m3u8
+
+# Local config overrides
+config.local.json
+.env
+.env.*
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+tmp/
+icon.iconset/
+icon_template.png

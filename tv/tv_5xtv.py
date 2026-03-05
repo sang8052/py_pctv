@@ -1,11 +1,9 @@
-'''
-Author: SudemQaQ
-Date: 2024-09-09 10:03:55
-email: mail@szhcloud.cn
-Blog: https://blog.szhcloud.cn
-github: https://github.com/sang8052
-LastEditors: SudemQaQ
-LastEditTime: 2024-09-22 22:40:06
+﻿'''
+Author: SudemQaQ, imxiaoanag
+Date: 2026-03-04
+Blog: https://www.imxiaoanag.com
+github: https://github.com/matthewlu070111/py_pctv
+LastEditors: imxiaoanag
 Description: 
 '''
 
@@ -24,6 +22,10 @@ class tv_5xtv(threading.Thread):
         self.config = config 
         self.thread_id = thread_id
         self.show_console = config["app"]["thread_log"]
+        self.stop_event = threading.Event()
+
+    def stop(self):
+        self.stop_event.set()
 
     def console_log(self,content):
         if self.show_console:
@@ -48,10 +50,10 @@ class tv_5xtv(threading.Thread):
         if not os.path.exists("./static/data"):
             os.mkdir("./static/data")
 
-        while True:
+        while not self.stop_event.is_set():
             self.console_log("[LOG]请求刷新M3U8分片信息")
             m3u8_content = ""
-            while m3u8_content == "":
+            while m3u8_content == "" and not self.stop_event.is_set():
                 try:
                     resp = requests.get(live_address,headers={"user-agent": gc.REQUEST_USER_AGENT, "referer": gc.REQUEST_5XTV_SRC_REFERER},timeout=3)
                     if resp.status_code == 200:
@@ -63,9 +65,14 @@ class tv_5xtv(threading.Thread):
                         self.console_log("[INFO]直播流播放地址:" + live_address)
                 except:
                     tools.console_log("[WARNING]尝试拉取直播流地址失败,网络异常,1秒后重试...")
-                    time.sleep(1)
+                    if self.stop_event.wait(1):
+                        break
+            if self.stop_event.is_set():
+                break
             # 下载切片的文件 
             for content in m3u8_content.split("\n"):
+                if self.stop_event.is_set():
+                    break
                 if not content.startswith("#") and content:
                     url = {"filename": content.split("?")[0],"filesrc": gc.REQUEST_5XTV_SRC + content}
                     url["time"] = url["filename"].split("-")[-1].split(".")[0]
@@ -85,7 +92,6 @@ class tv_5xtv(threading.Thread):
                     url["local_file"] = "data/5xtv_" + url["time"] + ".ts"
                     m3u8_content = m3u8_content.replace(content, url["local_file"])
                   
-            self.console_log("[INFO]更新5xtv.m3u8")
             tools.write_file(gc.APP_5XTV_M3U8_FILE,m3u8_content)
            
             # 删除切片的文件
@@ -100,4 +106,6 @@ class tv_5xtv(threading.Thread):
                     except:
                         pass 
 
-            time.sleep(1)
+            if self.stop_event.wait(1):
+                break
+

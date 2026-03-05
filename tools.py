@@ -1,4 +1,4 @@
-import os,sys,time,uuid,json,threading,hashlib
+﻿import os,sys,time,uuid,json,threading,hashlib
 import requests
 from Crypto.Cipher import DES
 import gconfig as gc  
@@ -34,9 +34,9 @@ def get_local_path():
 def download_file(url, local_path,headers = {}, name="",thread_id = 0):
     from tqdm import tqdm
     if name != "":
-        console_log("[LOG]开始从[%s]下载文件[%s]" % (url, name),thread_id)
+        console_log("[LOG]寮€濮嬩粠[%s]涓嬭浇鏂囦欢[%s]" % (url, name),thread_id)
     else:
-        console_log("[LOG]开始从[%s]下载文件" % (url),thread_id)
+        console_log("[LOG]寮€濮嬩粠[%s]涓嬭浇鏂囦欢" % (url),thread_id)
     status = False
     try:
         
@@ -49,9 +49,9 @@ def download_file(url, local_path,headers = {}, name="",thread_id = 0):
             p = tqdm(total=file_size, unit="B", unit_scale=True, unit_divisor=1024, leave=True)
             if thread_id != 0:
                  thread_text = "{THREAD-%d}" % (thread_id)
-                 p.set_description("%s下载文件" % (thread_text))
+                 p.set_description("%s涓嬭浇鏂囦欢" % (thread_text))
             else:
-                p.set_description("下载文件")
+                p.set_description("涓嬭浇鏂囦欢")
         fp = open(local_path, "wb")
         for chunk in resp.iter_content(chunk_size=8192):
             if chunk:
@@ -62,9 +62,8 @@ def download_file(url, local_path,headers = {}, name="",thread_id = 0):
             p.close()
         status = True
     except Exception as err:
-        console_log("[ERROR]从[%s]下载文件是遇到错误,文件下载失败!err:" + str(err),thread_id)
+        console_log("[ERROR]浠嶽%s]涓嬭浇鏂囦欢鏄亣鍒伴敊璇?鏂囦欢涓嬭浇澶辫触!err:" + str(err),thread_id)
 
-    console_log("[INFO]从[%s]下载文件到[%s]成功" % (url, local_path),thread_id)
     return status
 
 
@@ -84,27 +83,33 @@ def format_date(format="%Y-%m-%d %H:%M:%S", times=None):
 
 def console_log(content,thread_id = 0):
     console_lock.acquire()
-    if thread_id > 0:
-        thread_text = "{THREAD-%d}" % (thread_id)
-    else:
-        thread_text = ""
-    console = "%s[%s]%s" % (thread_text,format_date(), content)
-    color_id = 37
-    if str_include(console, '[INFO]') != -1:
-        color_id = 32
-    if str_include(console, '[WARNING]') != -1:
-        color_id = 33
-    if str_include(console, '[SQL]') != -1:
-        color_id = 34
-    if str_include(console, '[DEBUG]') != -1:
-        color_id = 35
-    if str_include(console, '[ERROR]') != -1:
-        color_id = 31
-    log = "\033[%dm%s\033[0m" % (color_id, console)
-    if thread_id >= 0:
-        print(log,flush=True)
-        sys.stdout.flush()
-    console_lock.release()
+    try:
+        if thread_id > 0:
+            thread_text = "{THREAD-%d}" % (thread_id)
+        else:
+            thread_text = ""
+        console = "%s[%s]%s" % (thread_text,format_date(), content)
+        color_id = 37
+        if str_include(console, '[INFO]') != -1:
+            color_id = 32
+        if str_include(console, '[WARNING]') != -1:
+            color_id = 33
+        if str_include(console, '[SQL]') != -1:
+            color_id = 34
+        if str_include(console, '[DEBUG]') != -1:
+            color_id = 35
+        if str_include(console, '[ERROR]') != -1:
+            color_id = 31
+        log = "\033[%dm%s\033[0m" % (color_id, console)
+        if thread_id >= 0:
+            try:
+                print(log,flush=True)
+                if sys.stdout:
+                    sys.stdout.flush()
+            except Exception:
+                pass
+    finally:
+        console_lock.release()
 
 def str_include(str, include):
     try:
@@ -132,7 +137,7 @@ def read_json(filename):
     try:
         return json.loads(content)
     except Exception as err:
-        console_log("[ERROR]读取JSON文件[%s]失败" % (filename))
+        console_log("[ERROR]璇诲彇JSON鏂囦欢[%s]澶辫触" % (filename))
         return {}
 
 def read_file(filename):
@@ -147,7 +152,7 @@ def read_file(filename):
 def write_file(filename,content):
     fp = open(filename,'w',encoding='utf-8')
     if type(content) == type({}):
-        content = json.dumps(content)
+        content = json.dumps(content, ensure_ascii=False, indent=4)
     fp.write(content)
     fp.close()
 
@@ -184,7 +189,12 @@ def is_object(val):
 
 def crypto_decrypt(des_key,data):
     cryptor = DES.new(des_key, DES.MODE_ECB)
-    decode_bytes = cryptor.decrypt(bytes.fromhex(data)).replace(b"\x05", b"")
-    return decode_bytes.decode()
+    decode_bytes = cryptor.decrypt(bytes.fromhex(data))
+    # 鍏煎鏍囧噯 PKCS5/PKCS7 濉厖锛岄伩鍏嶅熬閮ㄦ帶鍒跺瓧绗︽薄鏌?URL
+    if decode_bytes:
+        pad_len = decode_bytes[-1]
+        if 1 <= pad_len <= 8 and decode_bytes.endswith(bytes([pad_len]) * pad_len):
+            decode_bytes = decode_bytes[:-pad_len]
+    return decode_bytes.decode(errors="ignore").strip()
 
 
